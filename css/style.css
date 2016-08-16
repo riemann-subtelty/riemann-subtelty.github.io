@@ -1,9 +1,18 @@
 /*CSS Style Sheet*/
+/*General Styles*/
+.tpad{
+	padding: 80px;
+}
 /*Nav Bar Styles*/
 .navbar{
 	background: black;
 }
 
+
+/*Style for themes*/
+.mainContainer{
+	background-color: #f5f5f5;
+}
 
 /*Footer Styles*/
 footer#footer {
