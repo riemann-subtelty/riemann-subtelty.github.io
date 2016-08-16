@@ -1,4 +1,8 @@
 /*CSS Style Sheet*/
+.navbar {
+    background: black;
+    margin-top: 0px;
+}
 /*General Styles*/
 .tpad{
 	padding: 80px;
@@ -11,8 +15,31 @@
 
 /*Style for themes*/
 .mainContainer{
-	background-color: #f5f5f5;
+	background: #000;
+	color: white;
+	font-size: 14px;
 }
+
+.mainContainer .themes p{
+	font-size: 15px;
+}
+
+.mainContainer a {
+			color: #ff9900;
+		}
+
+.mainContainer .panel-body {
+
+			color: black;
+		}
+
+
+.panel-default>.panel-heading {
+    color: #333;
+    background-color: #000;
+    border-color: #000;
+}
+
 
 /*Footer Styles*/
 footer#footer {
@@ -56,3 +83,12 @@ footer#footer {
 			font-size: 16px;
 			margin-right: 10px;
 		}
+
+
+		/*Screen Size - Responsive*/
+
+		@media (max-width: 800px) {
+		    .mainContainer {
+		      padding-top:200px;
+		     /* margin:0;*/
+		    }
