@@ -28,6 +28,12 @@
 			color: #ff9900;
 		}
 
+.mainContainer li a {
+			color: #000;
+		}
+
+
+
 .mainContainer .panel-body {
 
 			color: black;
