@@ -13,6 +13,13 @@
 }
 
 
+/*Form Section*/
+.formPad{
+	    padding-top: 50px;
+    	padding-left: 40px;
+}
+
+
 /*Style for themes*/
 .mainContainer{
 	background: #000;
