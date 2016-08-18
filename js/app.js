@@ -1,5 +1,5 @@
 angular.module('app', ['firebase'])
-	.constant('BigHuge_ApiKey', 'd22bd31e16213de4e998838ee26d8b70')
+	.constant('BigHuge_ApiKey', '4b098a7ebd266723f7bd8f686b7b6ca6')
     .config(function() {
         var config = {
             apiKey: "AIzaSyD0zGHLRsNUR144T_2bJxm_ZoFJJMqpDI0",
