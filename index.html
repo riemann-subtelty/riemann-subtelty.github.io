@@ -1,43 +1,49 @@
 <!DOCTYPE html>
 <html>
-	<head>
-			<meta charset="utf-8">
-	        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	    	<meta name="Structured Brainstorming" content="Automated Tool for Structured Brainstorming and Customer Affinity Research">
-	    	<meta name="keywords" content="one, two, three">
-	        <meta name="viewport" content="width=device-width, initial-scale=1">
-			<title>Structured Brainstorming</title>
+<head lang="en">
+    <meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="Structured Brainstorming" content="Automated Tool for Structured Brainstorming and Customer Affinity Research">
+	<meta name="keywords" content="one, two, three">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Structured Brainstorming</title>
 
-			<!-- external CSS link -->
-			<!-- Bootstrap -->
-			<!-- Latest compiled and minified CSS -->
-			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- external CSS link -->
+	<!-- Bootstrap -->
+	<!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.service.js"></script>
+    <script src="js/localstorage.service.js"></script>
+    <script src="js/main.ctrl.js"></script>
 
-			<!-- CSS Style Sheet -->
-			<link rel="stylesheet" href="css/style.css">
+    <!-- CSS Style Sheet -->
+    <link rel="stylesheet" href="css/style.css">
 
-		
-	</head>
-
-	<body>
-		<!-- Begin Navigation -->
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.0.1/angularfire.min.js"></script>
+</head>
+<body ng-app="app" ng-controller="MainController as vm">
+    
+    <!-- Begin Navigation -->
 		<nav class="navbar navbar-form navbar-left navbar-inverse navbar-fixed-top">
 			<div class="container-fluid">
 				<div class="navbar-header">
 	      			<a class="navbar-brand" href="index.html">Affinity Process</a>
 	    		</div>
-	    		<div class="form-group">
-    				<input type="text" class="form-control" placeholder="username">
+	    		<div class="form-group" ng-hide="isLoggedIn || isSignedUp">
+    				<input type="text" class="form-control" ng-model="vm.user.email" placeholder="Email Address">
   				</div>
-  				<div class="form-group">
-    				<input type="text" class="form-control" placeholder="password">
+  				<div class="form-group" ng-hide="isLoggedIn || isSignedUp">
+    				<input type="password" class="form-control" ng-model="vm.user.password" placeholder="Password">
   				</div>
-	  			<button type="button" class="btn btn-default navbar-btn">Log in</button>
-	  			<button type="button" class="btn btn-default navbar-btn">Sign Up</button>
-	  			<span style="color: green; font-size: 18px; font-weight: bold;" class="glyphicon glyphicon-thumbs-up">Signed-In</span>
-	  			<span style="color: green; font-size: 18px; font-weight: bold;" class="glyphicon glyphicon-thumbs-up">Signed-Up Success</span>
-	  			<button type="button" class="btn btn-default navbar-btn">Log Out</button>
+	  			<button type="button" class="btn btn-default navbar-btn" ng-click="vm.login()" ng-hide="isLoggedIn || isSignedUp">Log in</button>
+	  			<button type="button" class="btn btn-default navbar-btn" ng-click="vm.signup()" ng-hide="isSignedUp || isLoggedIn">Sign Up</button>
+	  			<span style="color: green; font-size: 18px; font-weight: bold;" class="glyphicon glyphicon-thumbs-up" ng-show="isLoggedIn">Signed-In</span>
+	  			<span style="color: green; font-size: 18px; font-weight: bold;" class="glyphicon glyphicon-thumbs-up" ng-show="isSignedUp">Signed-Up Success</span>
+	  			<button type="button" class="btn btn-default navbar-btn" ng-click="vm.logout()" ng-show="isLoggedIn || isSignedUp">Log Out</button>
 	  		</div>
 		</nav> <!-- End Navigation -->
 
@@ -46,58 +52,45 @@
 			<div class="container-fluid">
 				<div class="row">
 				<!-- This column will contain the data entry -->
-					<div class="col-sm-6">
+					<div class="col-sm-6" ng-show="isLoggedIn || isSignedUp">
 						<div class="textFields"> <!-- these need to hide in "default state" -->
 							<div class="row">
-								<form class="form-inline formPad">
+								<form class="form-inline formPad" ng-repeat="box in vm.boxes">
 									  <div class="form-group">
 										    <label class="sr-only" for="#">Ideas</label>
-										    <textarea class="form-control" rows="5" id="comment" placeholder="Enter Idea"></textarea>
+										    <textarea class="form-control" rows="5" id="box.id"></textarea>
 									  </div>
-									  <button type="submit" class="btn btn-default">Delete</button>
-								</form>
-
-								<form class="form-inline formPad">
-									  <div class="form-group">
-										    <label class="sr-only" for="#">Ideas</label>
-										    <textarea class="form-control" rows="5" id="comment" placeholder="Enter Idea"></textarea>
-									  </div>
-									  <button type="submit" class="btn btn-default">Delete</button>
-								</form>
-
-								<form class="form-inline formPad">
-									  <div class="form-group">
-										    <label class="sr-only" for="#">Ideas</label>
-										    <textarea class="form-control" rows="5" id="comment" placeholder="Enter Idea"></textarea>
-									  </div>
-									  <button type="submit" class="btn btn-default">Delete</button>
+									  <button class="btn btn-default" ng-click="vm.deleteBox(box.index)">Delete</button>
 								</form>
 							</div>
 						</div>
 						<div class="textFieldButtons">
 							<div class ="row formPad">
-								<button class="btn btn-default" type="submit">Clear All</button>
-								<button class="btn btn-default" type="submit">Add</button>
-								<button class="btn btn-default" type="submit">Run</button>
+								<button class="btn btn-default" ng-click="vm.clearAll()">Clear All</button>
+								<button class="btn btn-default" ng-click="vm.createBox()">Add</button>
+								<button class="btn btn-default" ng-click="vm.loadData()">Run</button>
 							</div>
 						</div>
-						<div class="signUpDefault">
-							<div class="row formPad">
-								<p>Sign Up!</p>
-								<ul>
-									<li>Copy your ideas into the text box</li>
-									<li>Hit run</li>
-									<li>Scroll down to see results</li>
-
-
-								</ul>
-							</div>
-						</div>
+						
+						
 					</div>
+					<div class="col-sm-6" ng-hide="isSignedUp || isLoggedIn">
+							<div class="signUpDefault"  >
+								<div class="row" >
+									<h2>Sign Up!</h2>
+									<hr>
+									<ol>
+										<li>Copy your ideas into the text box</li>
+										<li>Hit run</li>
+										<li>Scroll down to see results</li>
+
+									</ol>
+								</div>
+							</div>
+						</div>
 				<!-- This column could contain information about the process -->
 				<div class="themes">
 					<div class="col-sm-6">
-
 						<section > <!-- Start Themes and How to -->
 							<div>
 								<h2>Design Method: Saturate and Group</h2>
@@ -110,103 +103,60 @@
 										<p>The general process: After ideation or empathizing, you and your team might need help unpacking experiences into tangible information. Gather your thoughts and group the findings; explore what themes and patterns emerge. Strive toward identifying meaningful needs of people, goals that can be fashioned into testable metrics and insights that will inform your design solutions. <strong>Just input your ideas to the left and hit the run button!</strong></p>
 										
 
-										<p>Get more information <a href="http://dschool.stanford.edu/wp-content/uploads/2013/10/METHODCARDS-v3-slim.pdf">here</a></p>
+										<p>Get more information <a href="http://dschool.stanford.edu/wp-content/uploads/2013/10/METHODCARDS-v3-slim.pdf" target="_blank">here</a></p>
 										
 									
 								</div>
 								<div class="row">
 														
-										<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-										  <div class="panel panel-default">
-										    <div class="panel-heading" role="tab" id="headingOne">
-										      <h4 class="panel-title">
-										        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-										          D.School Method
-										        </a>
-										      </h4>
-										    </div>
-										    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-										      <div class="panel-body">
-										        Saturate your wall space with post-its containing interesting findings, pictures from the field or comments from users. Organize the post-its into groups of related parts. You likely have some ideas of the patterns within the data from the unpacking you did when producing the notes. Maybe there is a relation between groups that you realize as you place items in groups. Try one set of grouping, discuss (and write down)the findings, and then create a new set of groups.The end goal is to synthesize data into interesting findings and create insights which will be useful to you increating design solutions. 
-										      </div>
-										    </div>
-										  </div>
-										  <div class="panel panel-default">
-										    <div class="panel-heading" role="tab" id="headingTwo">
-										      <h4 class="panel-title">
-										        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-										          Value Provided
-										        </a>
-										      </h4>
-										    </div>
-										    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-										      <div class="panel-body">
-										        The general process is divided into a divergent thinking, saturation, phase and a convergent thinking, or grouping phase. The process generates relationships not readily apparent from the gathered evidence. 
-										      </div>
-										    </div>
-										  </div>
-										  <div class="panel panel-default">
-										    <div class="panel-heading" role="tab" id="headingThree">
-										      <h4 class="panel-title">
-										        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-										          When do you use it? 
-										        </a>
-										      </h4>
-										    </div>
-										    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-										      <div class="panel-body">
-										        Use it at the beginning of any project to help generate goals, weights for those goals and key performance indicators(KPI) from those goals. Follow up with a "cross-impact analysis" to help determine relationships between identified associations or clusters. 
-										      </div>
-										    </div>
-										  </div>
-										  <div class="panel panel-default">
-										    <div class="panel-heading" role="tab" id="headingFour">
-										      <h4 class="panel-title">
-										        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-										          Examples of Use
-										      </a>
-										      </h4>
-										    </div>
-										    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-										      <div class="panel-body">
-										      	<p>
+										
+										<table class="table table-inverse .table-bordered">
+											<tr>
+												<th>D.School Method</th>
+												<th><p>Saturate your wall space with post-its containing interesting findings, pictures from the field or comments from users. Organize the post-its into groups of related parts. You likely have some ideas of the patterns within the data from the unpacking you did when producing the notes. Maybe there is a relation between groups that you realize as you place items in groups.</p> <p>Try one set of grouping, discuss (and write down)the findings, and then create a new set of groups.The end goal is to synthesize data into interesting findings and create insights which will be useful to you increating design solutions.</p> </th>
+
+											</tr>
+
+											<tr>
+												<th>Value Provided</th>
+												<th>The general process is divided into a divergent thinking, saturation, phase and a convergent thinking, or grouping phase. The process generates relationships not readily apparent from the gathered evidence.</th>
+												
+
+											</tr>
+											<tr>
+												<th>When do you use it?</th>
+												<th>Use it at the beginning of any project to help generate goals, weights for those goals and key performance indicators(KPI) from those goals. Follow up with a "cross-impact analysis" to help determine relationships between identified associations or clusters. </th>
+
+											</tr>
+											<tr>
+												<th>Examples of Use</th>
+												<th><p>
 										        One creative example would be to use the process prior to an interview during the empathy stage of the design process. The team should brainstorm possible conversation topics and then syntesize them into a few larger buckets. Organize those buckets into a proper order that flows naturally with conversation. 
 										        </p>
 										        <p>
 										        	Another common example begins when an engineering team examines comments or looks at the answer to user comments on a particular product type. This process can be used to generate insights on future design considerations, technical requirements, explore new use cases or generate goals and KPI. 
-										        </p>
-										      </div>
-										    </div>
-										  </div>
-										  <div class="panel panel-default">
-										    <div class="panel-heading" role="tab" id="headingFive">
-										      <h4 class="panel-title">
-										        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-										          Read More
-										        </a>
-										      </h4>
-										    </div>
-										    <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
-										      <div class="panel-body">
-										        <ul>
-										        	<li><a href="http://dschool.stanford.edu/">D.School - Stanford</a></li>
-										        	<li><a href="http://www.discover6sigma.org/post/2009/02/affinity-diagram/">Six Sigma Affinity Diagram</a></li>
-										        	<li><a href="https://www.isixsigma.com/tools-templates/affinity-diagram-kj-analysis/">Link to more links</a></li>
+										        </p></th>
+
+											</tr>
+											<tr>
+												<th>Read More</th>
+												<th><ul>
+										        	<li><a href="http://dschool.stanford.edu/" target="_blank">D.School - Stanford</a></li>
+										        	<li><a href="http://www.discover6sigma.org/post/2009/02/affinity-diagram/" target="_blank">Six Sigma Affinity Diagram</a></li>
+										        	<li><a href="https://www.isixsigma.com/tools-templates/affinity-diagram-kj-analysis/" target="_blank">Link to more links</a></li>
 
 
-										        </ul>
-										      </div>
-										    </div>
-										  </div>
-										</div>
-									
+										        </ul></th>
+
+											</tr>
+					  
+										</table>
 									
 								</div>
 							</div>
 						</section> <!-- End of Theme Section -->
-						
 
-					</div> <!-- End of Information Section -->
+							 <!-- End of Information Section -->
 					</div>
 				</div>
 					
@@ -214,7 +164,7 @@
 
 
 		</div> <!-- End of Main Container -->
-
+	</div>
 
 
 		<!-- Presentation Table -->
@@ -234,37 +184,10 @@
 
 						</tr>
 
-						<tr>
-							<td>Word 1</td>
-							<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-							cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-							proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
-							<td>14</td>
-
-						</tr>
-						<tr>
-							<td>Word 2</td>
-							<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-							cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-							proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
-							<td>10</td>
-
-						</tr>
-						<tr>
-							<td>Word 3</td>
-							<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-							cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-							proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
-							<td>10</td>
+						<tr ng-repeat="res in vm.results">
+							<td>{{res.word}}</td>
+							<td>{{res.comment}}</td>
+							<td>{{res.count}}</td>
 
 						</tr>
   
@@ -294,14 +217,14 @@
 						
 					</div>
 					<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="copyright">
-						<p class="title">Questions? Check out our <a href="#">FAQ</a> or <a href="#">Contact Us</a>.</p>
+						<p class="title">Questions? Check out our <a href="#" target="_blank">FAQ</a> or <a href="#" target="_blank">Contact Us</a>.</p>
 		                <p><strong>Affinity Diagram.</strong></p>                
 		                <p>The affinity process organizes ideas into natural relationships. 
 		                The process helps move beyond habitual thinking and preconceived categories. This tool is an attempt to automate the affinity diagramming process using properties of our language</p>
 						
 
 		                <p>Read more  
-		                <a href="http://asq.org/learn-about-quality/idea-creation-tools/overview/affinity.html">here</a>
+		                <a href="http://asq.org/learn-about-quality/idea-creation-tools/overview/affinity.html" target="_blank">here</a>
 						</p> 
 					</div>
 					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 social-links">
@@ -317,19 +240,5 @@
 				</div>
 			</div>			
 		</footer>
-
-
-
-
-
-
-		<!-- External Javascript Files -->
-		<!-- Bootstrap JS file -->
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-		<script type="text/javascript" src="js/app.js"></script>
-
-	</body>
+</body>
 </html>

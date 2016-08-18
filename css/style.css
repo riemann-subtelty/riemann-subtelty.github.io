@@ -19,6 +19,22 @@
     	padding-left: 40px;
 }
 
+/*Sign up Default style*/
+.signUpDefault ol li{
+	font-size: 30px;
+	color: orange;
+}
+
+.signUpDefault{
+	padding-right: 20px;
+	padding-bottom: 20px;
+}
+
+.signUpDefault h2{
+	color: orange;
+	font-size: 50px;
+}
+
 
 /*Style for themes*/
 .mainContainer{
@@ -53,6 +69,14 @@
     border-color: #000;
 }
 
+/*Styles for table*/
+.table-inverse li a{
+	color:orange;
+}
+
+.table-inverse th:first-child{
+	color:orange;
+}
 
 /*Footer Styles*/
 footer#footer {
