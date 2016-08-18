@@ -1,7 +1,7 @@
 /**
  * app controller
  */
-angular.module('app').controller("MainController", ['Auth', 'LocalStorage', function(Auth, LocalStorage){
+angular.module('app').controller("MainController", ['Auth', 'LocalStorage', '$http', 'BigHuge_ApiKey', function(Auth, LocalStorage, $http, BigHuge_ApiKey){
     var vm = this;
     vm.results = [
         {
@@ -68,47 +68,46 @@ angular.module('app').controller("MainController", ['Auth', 'LocalStorage', func
     
     loadBoxes();
     vm.createBox = function() {
-        var boxCnt = LocalStorage.get('boxCount');
-        if (boxCnt > 29)
-            return;
-        if (boxCnt)
-            boxCnt ++;
-        else
-            boxCnt = 1;
-        LocalStorage.set('boxCount', boxCnt);
-        loadBoxes();
+        vm.boxes.push({
+            text: '',
+            firstword: '',
+            firstword_thesaurus: ''
+        });
     }
 
     vm.clearAll = function() {
-        LocalStorage.set('boxCount', 1);
         loadBoxes();
     }
 
     vm.deleteBox = function(index) {
-        vm.boxes = [];
-        var boxCnt = LocalStorage.get('boxCount') ? LocalStorage.get('boxCount') : 0;
-        if (boxCnt > 0) {
-            boxCnt --;
-            LocalStorage.set('boxCount', boxCnt);
-        }
-        for (var i=1; i<=boxCnt; i++) {
-            vm.boxes.push({
-                index: i,
-                id: 'box' + i,
-                name: 'textbox' + i
+        vm.boxes.splice(index, 1);
+    }
+
+    vm.textChanged = function(index) {
+        vm.boxes[index].firstword = vm.boxes[index].text.split(' ')[0];
+    }
+
+    vm.runBox = function(index) {
+        vm.boxes[index].firstword = vm.boxes[index].text.split(' ')[0];
+        $http.get('http://words.bighugelabs.com/api/2/' + BigHuge_ApiKey + '/'+vm.boxes[index].firstword+'/json')
+            .then(function(response) {
+                keys = Object.keys(response.data);
+                if(keys.length>0) {
+                    vm.boxes[index].firstword_thesaurus = response.data[keys[0]].syn[0];
+                } else {
+                    vm.boxes[index].firstword_thesaurus = '';    
+                }                
+            }, function(response) {
+                vm.boxes[index].firstword_thesaurus = '';
             });
-        }
     }
 
     function loadBoxes() {
         vm.boxes = [];
-        var boxCnt = LocalStorage.get('boxCount') ? LocalStorage.get('boxCount') : 1;
-        for (var i=1; i<=boxCnt; i++) {
-            vm.boxes.push({
-                index: i,
-                id: 'box' + i,
-                name: 'textbox' + i
-            });
-        }
+        vm.boxes.push({
+            text: '',
+            firstword: '',
+            firstword_thesaurus: ''
+        });
     }
 }]);

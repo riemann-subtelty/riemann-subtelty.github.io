@@ -56,19 +56,26 @@
 						<div class="textFields"> <!-- these need to hide in "default state" -->
 							<div class="row">
 								<form class="form-inline formPad" ng-repeat="box in vm.boxes">
-									  <div class="form-group">
-										    <label class="sr-only" for="#">Ideas</label>
-										    <textarea class="form-control" rows="5" id="box.id"></textarea>
-									  </div>
-									  <button class="btn btn-default" ng-click="vm.deleteBox(box.index)">Delete</button>
+									<div class="row">
+										<div class="col-sm-2">{{ box.firstword }}</div>
+										<div class="col-sm-2">{{ box.firstword_thesaurus }}</div>
+										<div class="col-sm-4 form-group">											
+											<textarea class="form-control" rows="5" ng-model="box.text"></textarea>
+										</div>
+										<div class="col-sm-1">
+											<button class="btn btn-default" ng-click="vm.deleteBox($index)">Delete</button>
+										</div>
+										<div class="col-sm-1">
+											<button class="btn btn-default" ng-click="vm.runBox($index)">Run</button>
+										</div>		
+									</div>									  
 								</form>
 							</div>
 						</div>
 						<div class="textFieldButtons">
 							<div class ="row formPad">
 								<button class="btn btn-default" ng-click="vm.clearAll()">Clear All</button>
-								<button class="btn btn-default" ng-click="vm.createBox()">Add</button>
-								<button class="btn btn-default" ng-click="vm.loadData()">Run</button>
+								<button class="btn btn-default" ng-click="vm.createBox()">Add</button>								
 							</div>
 						</div>
 						
