@@ -89,7 +89,7 @@ angular.module('app').controller("MainController", ['Auth', 'LocalStorage', '$ht
 
     vm.runBox = function(index) {
         vm.boxes[index].firstword = vm.boxes[index].text.split(' ')[0];
-        $http.get('http://words.bighugelabs.com/api/2/' + BigHuge_ApiKey + '/'+vm.boxes[index].firstword+'/json')
+        $http.get('https://words.bighugelabs.com/api/2/' + BigHuge_ApiKey + '/'+vm.boxes[index].firstword+'/json')
             .then(function(response) {
                 keys = Object.keys(response.data);
                 if(keys.length>0) {
